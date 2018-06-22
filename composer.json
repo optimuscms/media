@@ -11,6 +11,18 @@
         "optix/media": "dev-master",
         "laravel/framework": "^5.6"
     },
+    "autoload": {
+        "psr-4": {
+            "Optimus\\Media\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Optimus\\Media\\Providers\\MediaServiceProvider"
+            ]
+        }
+    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }
