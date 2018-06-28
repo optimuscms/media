@@ -2,7 +2,9 @@
 
 namespace Optimus\Media;
 
+use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class MediaFolder extends Model
 {
@@ -13,5 +15,13 @@ class MediaFolder extends Model
     public function media()
     {
         return $this->hasMany(Media::class, 'folder_id');
+    }
+
+    public function scopeFilter(Builder $query, Request $request)
+    {
+        if ($request->filled('parent')) {
+            $parent = $request->query('parent');
+            $query->where('parent_id', $parent === 'root' ? null : $parent);
+        }
     }
 }

@@ -9,8 +9,11 @@ class Folder extends Resource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
-            'parent_id' => $this->parent_id
+            'parent_id' => $this->parent_id,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at
         ];
     }
 }

@@ -10,9 +10,9 @@ use Optimus\Media\Http\Resources\Media as MediaResource;
 
 class MediaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $media = Media::all();
+        $media = Media::filter($request)->get();
 
         return MediaResource::collection($media);
     }
@@ -43,11 +43,11 @@ class MediaController extends Controller
         $media = Media::findOrFail($id);
 
         $request->validate([
-            'name' => 'required'
+            'name' => 'filled',
+            'folder_id' => 'exists:media_folders,id|nullable'
         ]);
 
-        $media->name = $request->input('name');
-        $media->save();
+        $media->update($request->only(['name', 'folder_id']));
 
         return new MediaResource($media);
     }

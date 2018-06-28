@@ -10,9 +10,9 @@ use Optimus\Media\Http\Resources\Folder as FolderResource;
 
 class FoldersController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $folders = MediaFolder::all();
+        $folders = MediaFolder::filter($request)->get();
 
         return FolderResource::collection($folders);
     }
@@ -21,10 +21,7 @@ class FoldersController extends Controller
     {
         $this->validateFolder($request);
 
-        $folder = MediaFolder::create([
-            'name' => $request->input('name'),
-            'parent_id' => $request->input('parent_id')
-        ]);
+        $folder = MediaFolder::create($request->all());
 
         return new FolderResource($folder);
     }
@@ -42,10 +39,7 @@ class FoldersController extends Controller
 
         $this->validateFolder($request, $folder);
 
-        $folder->update([
-            'name' => $request->input('name'),
-            'parent_id' => $request->input('parent_id')
-        ]);
+        $folder->update($request->all());
 
         return new FolderResource($folder);
     }
@@ -64,7 +58,7 @@ class FoldersController extends Controller
     protected function validateFolder(Request $request, MediaFolder $folder = null)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => $folder ? 'filled' : 'required',
             'parent_id' => [
                 'nullable',
                 Rule::exists('media_folders', 'id')->where(function ($query) use ($folder) {

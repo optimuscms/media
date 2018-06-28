@@ -10,7 +10,15 @@ class Media extends Resource
     {
         return [
             'id' => $this->id,
-            ''
+            'folder_id' => $this->folder_id,
+            'name' => $this->name,
+            'file_name' => $this->file_name,
+            'extension' => $this->extension,
+            'url' => $this->getUrl(),
+            'mime_type' => $this->mime_type,
+            'size' => $this->size,
+            'updated_at' => (string) $this->updated_at,
+            'created_at' => (string) $this->created_at
         ];
     }
 }

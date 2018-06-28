@@ -27,7 +27,7 @@ class CreateMediaTable extends Migration
 
             $table->foreign('folder_id')
                   ->references('id')
-                  ->on('folders')
+                  ->on('media_folders')
                   ->onDelete('cascade');
         });
 
