@@ -15,6 +15,7 @@ class Media extends Resource
             'file_name' => $this->file_name,
             'extension' => $this->extension,
             'url' => $this->getUrl(),
+            'thumbnail_url' => $this->getUrl('media-manager-thumbnail'),
             'mime_type' => $this->mime_type,
             'size' => $this->size,
             'updated_at' => (string) $this->updated_at,
