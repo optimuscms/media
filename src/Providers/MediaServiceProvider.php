@@ -4,7 +4,6 @@ namespace Optimus\Media\Providers;
 
 use Optix\Media\Facades\Conversion;
 use Illuminate\Support\Facades\Route;
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\ServiceProvider;
 
 class MediaServiceProvider extends ServiceProvider
@@ -24,8 +23,8 @@ class MediaServiceProvider extends ServiceProvider
         // Routes
         $this->mapApiRoutes();
 
-        Conversion::register('media-manager-thumbnail', function (Image $image) {
-            $image->fit(400, 300);
+        Conversion::register('media-manager-thumbnail', function ($image) {
+            return $image->fit(400, 300);
         });
     }
 

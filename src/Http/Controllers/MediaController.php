@@ -18,7 +18,7 @@ class MediaController extends Controller
         return MediaResource::collection($media);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, FileManipulator $manipulator)
     {
         $request->validate([
             'file' => 'file|max:' . config('media.max_file_size'),
@@ -30,7 +30,7 @@ class MediaController extends Controller
             ->upload();
 
         if (in_array($media->extension, ['bmp', 'gif', 'jpg', 'jpeg', 'png'])) {
-            app(FileManipulator::class)->manipulate($media, ['media-manager-thumb']);
+            $manipulator->manipulate($media, ['media-manager-thumbnail']);
         }
 
         return new MediaResource($media);
