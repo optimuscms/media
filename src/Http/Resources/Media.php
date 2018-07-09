@@ -18,6 +18,9 @@ class Media extends Resource
             'thumbnail_url' => $this->getUrl('media-manager-thumbnail'),
             'mime_type' => $this->mime_type,
             'size' => $this->size,
+            'collection' => $this->whenPivotLoaded('mediables', function () {
+                return $this->pivot->collection;
+            }),
             'updated_at' => (string) $this->updated_at,
             'created_at' => (string) $this->created_at
         ];
