@@ -57,7 +57,7 @@ class MediaController extends Controller
         return new MediaResource($media);
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         Media::findOrFail($id)->delete();
 

@@ -44,7 +44,7 @@ class FoldersController extends Controller
         return new FolderResource($folder);
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $folder = MediaFolder::findOrFail($id);
 
