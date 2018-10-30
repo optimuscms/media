@@ -4,8 +4,8 @@ namespace Optimus\Media\Http\Controllers;
 
 use Optimus\Media\Media;
 use Illuminate\Http\Request;
-use Optix\Media\FileManipulator;
 use Optix\Media\MediaUploader;
+use Optix\Media\ImageManipulator;
 use Illuminate\Routing\Controller;
 use Optimus\Media\Http\Resources\Media as MediaResource;
 
@@ -18,7 +18,7 @@ class MediaController extends Controller
         return MediaResource::collection($media);
     }
 
-    public function store(Request $request, FileManipulator $manipulator)
+    public function store(Request $request, ImageManipulator $manipulator)
     {
         $request->validate([
             'file' => 'file|max:' . config('media.max_file_size'),

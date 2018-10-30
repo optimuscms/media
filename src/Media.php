@@ -3,8 +3,8 @@
 namespace Optimus\Media;
 
 use Illuminate\Http\Request;
-use Optix\Media\Media as BaseMedia;
 use Illuminate\Database\Eloquent\Builder;
+use Optix\Media\Models\Media as BaseMedia;
 
 class Media extends BaseMedia
 {

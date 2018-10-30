@@ -2,9 +2,9 @@
 
 namespace Optimus\Media\Providers;
 
-use Optix\Media\Facades\Conversion;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Optix\Media\Conversions\Conversion;
 
 class MediaServiceProvider extends ServiceProvider
 {

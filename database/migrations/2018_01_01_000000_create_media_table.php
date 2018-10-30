@@ -4,26 +4,12 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMediaTable extends Migration
+class UpdateMediaTable extends Migration
 {
     public function up()
     {
-        Schema::create('media_folders', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('parent_id')->index()->nullable();
-            $table->string('name');
-            $table->timestamps();
-        });
-
-        Schema::create('media', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::table('media', function (Blueprint $table) {
             $table->unsignedInteger('folder_id')->index()->nullable();
-            $table->string('name');
-            $table->string('file_name');
-            $table->string('disk');
-            $table->string('mime_type');
-            $table->unsignedInteger('size');
-            $table->timestamps();
 
             $table->foreign('folder_id')
                   ->references('id')
@@ -48,6 +34,5 @@ class CreateMediaTable extends Migration
     {
         Schema::dropIfExists('mediables');
         Schema::dropIfExists('media');
-        Schema::dropIfExists('media_folders');
     }
 }
