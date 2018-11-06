@@ -6,6 +6,6 @@ return [
 
     'max_file_size' => 5 * 1024,
 
-    'model' => Optimus\Media\Media::class
+    'model' => Optimus\Media\Models\Media::class
 
 ];

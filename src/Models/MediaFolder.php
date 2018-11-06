@@ -1,6 +1,6 @@
 <?php
 
-namespace Optimus\Media;
+namespace Optimus\Media\Models;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;

@@ -2,11 +2,11 @@
 
 namespace Optimus\Media\Http\Controllers;
 
-use Optimus\Media\Media;
 use Illuminate\Http\Request;
+use Optix\Media\Models\Media;
 use Optix\Media\MediaUploader;
-use Optix\Media\ImageManipulator;
 use Illuminate\Routing\Controller;
+use Optix\Media\Jobs\PerformConversions;
 use Optimus\Media\Http\Resources\Media as MediaResource;
 
 class MediaController extends Controller
@@ -18,7 +18,7 @@ class MediaController extends Controller
         return MediaResource::collection($media);
     }
 
-    public function store(Request $request, ImageManipulator $manipulator)
+    public function store(Request $request)
     {
         $request->validate([
             'file' => 'file|max:' . config('media.max_file_size'),
@@ -26,11 +26,13 @@ class MediaController extends Controller
         ]);
 
         $media = MediaUploader::fromFile($request->file('file'))
-            ->withAttributes(['folder_id' => $request->input('folder_id')])
+            ->withAttributes([
+                'folder_id' => $request->input('folder_id')
+            ])
             ->upload();
 
         if (in_array($media->extension, ['bmp', 'gif', 'jpg', 'jpeg', 'png'])) {
-            $manipulator->manipulate($media, ['media-manager-thumbnail']);
+            PerformConversions::dispatch($media, ['400x300']);
         }
 
         return new MediaResource($media);
@@ -52,7 +54,10 @@ class MediaController extends Controller
             'folder_id' => 'exists:media_folders,id|nullable'
         ]);
 
-        $media->update($request->only(['name', 'folder_id']));
+        $media->update([
+            'name' => $request->input('name'),
+            'folder_id' => $request->input('folder_id')
+        ]);
 
         return new MediaResource($media);
     }

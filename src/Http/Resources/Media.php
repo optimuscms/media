@@ -15,7 +15,7 @@ class Media extends Resource
             'file_name' => $this->file_name,
             'extension' => $this->extension,
             'url' => $this->getUrl(),
-            'thumbnail_url' => $this->getUrl('media-manager-thumbnail'),
+            'thumbnail_url' => $this->getUrl('400x300'),
             'mime_type' => $this->mime_type,
             'size' => $this->size,
             'collection' => $this->whenPivotLoaded('mediables', function () {
