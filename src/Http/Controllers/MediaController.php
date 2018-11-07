@@ -3,8 +3,8 @@
 namespace Optimus\Media\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Optix\Media\Models\Media;
 use Optix\Media\MediaUploader;
+use Optimus\Media\Models\Media;
 use Illuminate\Routing\Controller;
 use Optix\Media\Jobs\PerformConversions;
 use Optimus\Media\Http\Resources\Media as MediaResource;
