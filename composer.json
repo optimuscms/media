@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "optix/media": "dev-next",
+        "optix/media": "~0.1",
         "laravel/framework": "~5.5|~5.6|~5.7"
     },
     "autoload": {
