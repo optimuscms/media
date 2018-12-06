@@ -4,7 +4,7 @@ return [
 
     'disk' => 'public',
 
-    'max_file_size' => 5 * 1024,
+    'max_file_size' => 5120,
 
     'model' => Optimus\Media\Models\Media::class
 

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Routing\Controller;
 use Optimus\Media\Models\MediaFolder;
-use Optimus\Media\Http\Resources\Folder as FolderResource;
+use Optimus\Media\Http\Resources\FolderResource;
 
 class FoldersController extends Controller
 {
@@ -61,11 +61,12 @@ class FoldersController extends Controller
             'name' => $folder ? 'filled' : 'required',
             'parent_id' => [
                 'nullable',
-                Rule::exists('media_folders', 'id')->where(function ($query) use ($folder) {
-                    $query->when($folder, function ($query) use ($folder) {
-                        $query->where('id', '<>', $folder->id);
-                    });
-                })
+                Rule::exists('media_folders', 'id')
+                    ->where(function ($query) use ($folder) {
+                        $query->when($folder, function ($query) use ($folder) {
+                            $query->where('id', '<>', $folder->id);
+                        });
+                    })
             ]
         ]);
     }

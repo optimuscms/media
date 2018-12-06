@@ -12,16 +12,16 @@ class Media extends BaseMedia
         'folder_id', 'name', 'file_name', 'disk', 'mime_type', 'size'
     ];
 
-    public function folder()
-    {
-        return $this->belongsTo(MediaFolder::class, 'folder_id');
-    }
-
     public function scopeFilter(Builder $query, Request $request)
     {
         if ($request->filled('folder')) {
             $folder = $request->query('folder');
             $query->where('folder_id', $folder === 'root' ? null : $folder);
         }
+    }
+
+    public function folder()
+    {
+        return $this->belongsTo(MediaFolder::class, 'folder_id');
     }
 }
