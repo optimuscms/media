@@ -2,9 +2,9 @@
 
 namespace Optimus\Media;
 
-use Optix\Media\Facades\Conversion;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Optix\Media\Conversions\Conversion;
 
 class MediaServiceProvider extends ServiceProvider
 {
@@ -27,6 +27,7 @@ class MediaServiceProvider extends ServiceProvider
         // Routes
         $this->registerApiRoutes();
 
+        // Conversions
         Conversion::register('400x300', function ($image) {
             return $image->fit(400, 300);
         });
