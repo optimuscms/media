@@ -2,9 +2,9 @@
 
 namespace Optimus\Media\Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Optimus\Media\Models\MediaFolder;
 use Optimus\Media\Tests\TestCase;
+use Optimus\Media\Models\MediaFolder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CreateFolderTest extends TestCase
 {
