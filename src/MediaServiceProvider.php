@@ -11,17 +11,13 @@ class MediaServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // Migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+
         // Config
         $this->publishes([
             __DIR__ . '/../config/media.php' => config_path('media.php')
         ], 'config');
-
-        // Migrations
-        $this->publishes([
-            __DIR__ . '/../database/migrations/create_media_table.stub' => database_path(
-                'migrations/' . date('Y_m_d_His', time()) . '_create_media_table.php'
-            )
-        ], 'migrations');
 
         // Routes
         $this->registerAdminRoutes();
@@ -31,6 +27,13 @@ class MediaServiceProvider extends ServiceProvider
              ->register('400x300', function ($image) {
                  return $image->fit(400, 300);
              });
+    }
+
+    public function register()
+    {
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/media.php', 'media'
+        );
     }
 
     protected function registerAdminRoutes()

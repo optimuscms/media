@@ -2,8 +2,9 @@
 
 namespace Optimus\Media\Tests;
 
-use Optimus\Media\MediaServiceProvider;
+use Optimus\Users\Models\AdminUser;
 use Optimus\Users\UserServiceProvider;
+use Optimus\Media\MediaServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
@@ -24,5 +25,19 @@ class TestCase extends BaseTestCase
             'database' => ':memory:',
             'prefix' => ''
         ]);
+    }
+
+    protected function signIn()
+    {
+        $user = AdminUser::create([
+            'name' => 'Admin',
+            'email' => 'admin@optimuscms.com',
+            'username' => 'admin',
+            'password' => bcrypt('password')
+        ]);
+
+        $this->actingAs($user, 'admin');
+
+        return $user;
     }
 }
