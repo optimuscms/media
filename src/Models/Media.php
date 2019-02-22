@@ -15,7 +15,7 @@ class Media extends BaseMedia
     public function scopeFilter(Builder $query, Request $request)
     {
         if ($request->filled('folder')) {
-            $folder = $request->query('folder');
+            $folder = $request->input('folder');
             $query->where('folder_id', $folder === 'root' ? null : $folder);
         }
     }

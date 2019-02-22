@@ -2,9 +2,8 @@
 
 namespace Optimus\Media;
 
-use Illuminate\Support\Facades\Route;
+use Optix\Media\ConversionManager;
 use Illuminate\Support\ServiceProvider;
-use Optix\Media\Conversions\Conversion;
 
 class MediaServiceProvider extends ServiceProvider
 {
@@ -25,22 +24,25 @@ class MediaServiceProvider extends ServiceProvider
         ], 'migrations');
 
         // Routes
-        $this->registerApiRoutes();
+        $this->registerAdminRoutes();
 
         // Conversions
-        Conversion::register('400x300', function ($image) {
-            return $image->fit(400, 300);
-        });
+        $this->app[ConversionManager::class]
+             ->register('400x300', function ($image) {
+                 return $image->fit(400, 300);
+             });
     }
 
-    protected function registerApiRoutes()
+    protected function registerAdminRoutes()
     {
-        Route::prefix('api')
-             ->middleware(['api', 'auth:admin'])
+        $this->app['router']
+             ->name('admin.')
+             ->prefix('admin')
+             ->middleware('web', 'auth:admin')
              ->namespace($this->controllerNamespace)
-             ->group(function () {
-                 Route::apiResource('media', 'MediaController');
-                 Route::apiResource('media-folders', 'FoldersController');
+             ->group(function ($router) {
+                 $router->apiResource('media', 'MediaController');
+                 $router->apiResource('media-folders', 'FoldersController');
              });
     }
 }

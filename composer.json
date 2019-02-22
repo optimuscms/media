@@ -8,12 +8,21 @@
         }
     ],
     "require": {
-        "optix/media": "^0.1",
-        "laravel/framework": "~5.5|~5.6|~5.7"
+        "optix/media": "dev-master",
+        "laravel/framework": "~5.5|~5.6|~5.7",
+        "optimuscms/users": "^0.2"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^3.7"
     },
     "autoload": {
         "psr-4": {
             "Optimus\\Media\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Optimus\\Media\\Tests\\": "tests"
         }
     },
     "extra": {
