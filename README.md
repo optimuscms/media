@@ -10,6 +10,19 @@ You will then be able to start calling the below API routes from your applicatio
 The API follows standard RESTful conventions, with responses being returned in JSON. 
 Appropriate HTTP status codes are provided, and these should be used to check the outcome of an operation.
 
+**Folders**
+ - [List folders](#folders-all)
+ - [Get folder](#folders-get)
+ - [Update folder](#folders-update)
+ - [Delete folder](#folders-delete)
+ 
+**Media Items**
+ - [List media items](#media-all)
+ - [Get media item](#media-get)
+ - [Update media item](#media-update)
+ - [Delete media item](#media-delete)
+
+<a name="folders-all"></a>
 ### GET `/admin/media-folders`
 
 List all available folders that media items can be added to.
@@ -39,6 +52,7 @@ None
 ]
 ```
 
+<a name="folders-get"></a>
 ### GET `/admin/media-folders/{id}`
 
 Retrieve details for a specific folder.
@@ -62,6 +76,7 @@ Retrieve details for a specific folder.
 }
 ```
 
+<a name="folders-update"></a>
 ### PUT/PATCH `/admin/media-folders/{id}`
 
 Update the details of a folder.
@@ -86,6 +101,7 @@ Update the details of a folder.
 }
 ```
 
+<a name="folders-create"></a>
 ### POST `/admin/media-folders`
 
 Create a new folder.
@@ -108,7 +124,7 @@ Create a new folder.
     "updated_at": "2017-12-25 10:15:12"
 }
 ```
-
+<a name="folders-delete"></a>
 ### DELETE `/admin/media-folders/{id}`
 
 Delete a folder.
@@ -123,6 +139,7 @@ Delete a folder.
 
 The HTTP status code will be 204 if successful.
 
+<a name="media-all"></a>
 ### GET `/admin/media`
 
 List available media items.
@@ -160,6 +177,7 @@ None
 ]
 ```
 
+<a name="media-get"></a>
 ### GET `/admin/media/{id}`
 
 Retrieve details of a specific media item.
@@ -186,6 +204,7 @@ Retrieve details of a specific media item.
 }
 ```
 
+<a name="media-update"></a>
 ### PUT/PATCH 
 
 Update the details of a single media item.
@@ -213,6 +232,7 @@ Update the details of a single media item.
 }
 ```
 
+<a name="media-create"></a>
 ### POST `/admin/media`
 
 Create and store a new media item.
@@ -241,6 +261,7 @@ Create and store a new media item.
 }
 ```
 
+<a name="media-delete"></a>
 ### DELETE `/admin/media/{id}`
 
 Delete a media item.
