@@ -113,6 +113,8 @@ Create a new folder.
 
 Delete a folder.
 
+**Parameters**
+
 | Parameter | Required? | Type  | Description    |
 |-----------|-----------|-------|----------------|
 | id      |    ✓      | int  | The ID of the folder |
@@ -156,6 +158,32 @@ None
         "updated_at": "2019-02-19 09:36:23"
     }
 ]
+```
+
+### GET `/admin/media/{id}`
+
+Retrieve details of a specific media item.
+
+**Parameters**
+
+| Parameter | Required? | Type  | Description    |
+|-----------|-----------|-------|----------------|
+| id      |    ✓      | int  | The ID of the media item |
+
+**Example Response**
+
+```json
+{
+    "id": 513,
+    "folder_id": 4, 
+    "name": "Landscape", 
+    "file_name": "landscape.png",
+    "disk": "local",
+    "mime_type": "image/png", 
+    "size": 219462,
+    "created_at": "2019-02-19 09:36:23",
+    "updated_at": "2019-02-19 09:36:23"
+}
 ```
 
 ### POST `/admin/media`
