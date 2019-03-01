@@ -186,6 +186,33 @@ Retrieve details of a specific media item.
 }
 ```
 
+### PUT/PATCH 
+
+Update the details of a single media item.
+
+**Parameters**
+
+| Parameter | Required? | Type  | Description    |
+|-----------|-----------|-------|----------------|
+| name      |    ✗      | string| A user-facing name for the media item |
+| folder_id | ✗         | int   | The ID of the folder in which to store the media. If an empty value is provided, the media will be moved into the root folder. |
+
+**Example Response**
+
+```json
+{
+    "id": 513,
+    "folder_id": 4, 
+    "name": "Landscape", 
+    "file_name": "landscape.png",
+    "disk": "local",
+    "mime_type": "image/png", 
+    "size": 219462,
+    "created_at": "2019-02-19 09:36:23",
+    "updated_at": "2019-02-19 09:36:23"
+}
+```
+
 ### POST `/admin/media`
 
 Create and store a new media item.
