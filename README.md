@@ -18,7 +18,59 @@ List all available folders that media items can be added to.
 
 None
 
-**Response**
+**Example Response**
+
+```json
+[
+    {
+        "id": 12,
+        "parent_id": null, 
+        "name": "Product Images", 
+        "created_at": "2017-12-24 09:36:23",
+        "updated_at": "2017-12-25 10:15:12"
+    },
+    {
+        "id": 13,
+        "parent_id": 12, 
+        "name": "Product Thumbnails", 
+        "created_at": "2019-02-19 09:36:23",
+        "updated_at": "2019-02-19 09:36:23"
+    }
+]
+```
+
+### GET `/admin/media-folders/{id}`
+
+Retrieve details for a specific folder
+
+**Parameters**
+
+| Parameter | Required? | Type  | Description    |
+|-----------|-----------|-------|----------------|
+| id      |    ✓      | int  | The ID of the folder |
+
+
+**Example Response**
+
+```json
+{
+    "id": 12,
+    "parent_id": null, 
+    "name": "Product Images", 
+    "created_at": "2017-12-24 09:36:23",
+    "updated_at": "2017-12-25 10:15:12"
+}
+```
+
+### GET `/admin/media`
+
+List available media items.
+
+**Parameters**
+
+None
+
+**Example Response**
 
 ```json
 [
@@ -47,18 +99,6 @@ None
 ]
 ```
 
-### GET `/admin/media`
-
-List available media items.
-
-**Parameters**
-
-None
-
-**Response**
-
-Todo
-
 ### POST `/admin/media`
 
 Create and store a new media item.
@@ -71,7 +111,7 @@ Create and store a new media item.
 | folder_id | ✗         | int   | The ID of the folder in which to store the media. If not provided, the media will be stored in the root folder. |
 
 
-
+**Example Response**
 
 Todo
 
