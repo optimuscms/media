@@ -70,7 +70,7 @@ Update the details of a folder.
 
 | Parameter | Required? | Type  | Description    |
 |-----------|-----------|-------|----------------|
-| parent_id |    ✗      | int   | The ID of the parent folder. Set to null to move the folder into the root |
+| parent_id |    ✗      | int   | The ID of the parent folder. Set to empty to move the folder into the root |
 | name      |    ✗      | string| The name of the folder      |
 
 
@@ -85,6 +85,41 @@ Update the details of a folder.
     "updated_at": "2017-12-25 10:15:12"
 }
 ```
+
+### POST `/admin/media-folders`
+
+Create a new folder.
+
+**Parameters**
+
+| Parameter | Required? | Type  | Description    |
+|-----------|-----------|-------|----------------|
+| parent_id |    ✓      | int   | The ID of the parent folder. Set to null to move the folder into the root |
+| name      |    ✓      | string| The name of the folder      |
+
+**Example Response**
+
+```json
+{
+    "id": 12,
+    "parent_id": null, 
+    "name": "Product Images", 
+    "created_at": "2017-12-24 09:36:23",
+    "updated_at": "2017-12-25 10:15:12"
+}
+```
+
+### DELETE `/admin/media-folders/{id}`
+
+Delete a folder.
+
+| Parameter | Required? | Type  | Description    |
+|-----------|-----------|-------|----------------|
+| id      |    ✓      | int  | The ID of the folder |
+
+**Example Response**
+
+HTTP status code will be 204 if successful.
 
 ### GET `/admin/media`
 
