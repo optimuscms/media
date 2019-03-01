@@ -41,13 +41,37 @@ None
 
 ### GET `/admin/media-folders/{id}`
 
-Retrieve details for a specific folder
+Retrieve details for a specific folder.
 
 **Parameters**
 
 | Parameter | Required? | Type  | Description    |
 |-----------|-----------|-------|----------------|
 | id      |    ✓      | int  | The ID of the folder |
+
+
+**Example Response**
+
+```json
+{
+    "id": 12,
+    "parent_id": null, 
+    "name": "Product Images", 
+    "created_at": "2017-12-24 09:36:23",
+    "updated_at": "2017-12-25 10:15:12"
+}
+```
+
+### PUT/PATCH `/admin/media-folders/{id}`
+
+Update the details of a folder.
+
+**Parameters**
+
+| Parameter | Required? | Type  | Description    |
+|-----------|-----------|-------|----------------|
+| parent_id |    ✗      | int   | The ID of the parent folder. Set to null to move the folder into the root |
+| name      |    ✗      | string| The name of the folder      |
 
 
 **Example Response**
