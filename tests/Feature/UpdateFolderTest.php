@@ -28,9 +28,13 @@ class UpdateFolderTest extends TestCase
     /** @test */
     public function it_can_update_a_folder()
     {
+        $newData = [
+            'name' => 'New name',
+            'parent_id' => null
+        ];
         $response = $this->patchJson(
             route('admin.media-folders.update', ['id' => $this->folder->id]),
-            $newData = $this->validData()
+            $newData
         );
 
         $response
@@ -46,11 +50,46 @@ class UpdateFolderTest extends TestCase
             ]);
     }
 
-    protected function validData($overrides = [])
+    /** @test */
+    public function it_will_reject_invalid_parent_folder()
     {
-        return array_merge([
+        $newData = [
             'name' => 'New name',
-            'parent_id' => null
-        ], $overrides);
+            'parent_id' => 9999
+        ];
+        $response = $this->patchJson(
+            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            $newData
+        );
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['parent_id']);
+    }
+
+    /** @test */
+    public function it_will_reject_missing_folder_name()
+    {
+        $response1 = $this->patchJson(
+            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            [
+                'name' => '',
+                'parent_id' => null
+            ]);
+
+        $response1
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['name']);
+
+        $response2 = $this->patchJson(
+            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            [
+                'name' => null,
+                'parent_id' => null
+            ]);
+
+        $response2
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['name']);
     }
 }
