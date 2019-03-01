@@ -121,7 +121,7 @@ Delete a folder.
 
 **Example Response**
 
-HTTP status code will be 204 if successful.
+The HTTP status code will be 204 if successful.
 
 ### GET `/admin/media`
 
@@ -227,7 +227,34 @@ Create and store a new media item.
 
 **Example Response**
 
-Todo
+```json
+{
+    "id": 513,
+    "folder_id": 4, 
+    "name": "Landscape", 
+    "file_name": "landscape.png",
+    "disk": "local",
+    "mime_type": "image/png", 
+    "size": 219462,
+    "created_at": "2019-02-19 09:36:23",
+    "updated_at": "2019-02-19 09:36:23"
+}
+```
+
+### DELETE `/admin/media/{id}`
+
+Delete a media item.
+
+**Parameters**
+
+| Parameter | Required? | Type  | Description    |
+|-----------|-----------|-------|----------------|
+| id      |    ✓      | int  | The ID of the media item to delete |
+
+**Example Response**
+
+The HTTP status code will be 204 if successful.
+
 
 ## License
 
