@@ -32,10 +32,13 @@ class CreateMediaTest extends TestCase
     /** @test */
     public function it_can_create_media()
     {
-        $response = $this->postJson(
-            route('admin.media.store'),
-            $data = $this->validData()
-        );
+        $fileName = 'asdf1.jpg';
+        $data = [
+            'folder_id' => $this->folder->id,
+            'file' => UploadedFile::fake()->image($fileName),
+        ];
+
+        $response = $this->postJson(route('admin.media.store'), $data);
 
         $response
             ->assertStatus(201)
@@ -45,7 +48,7 @@ class CreateMediaTest extends TestCase
             ->assertJson([
                 'data' => [
                     'folder_id' => $data['folder_id'],
-                    'file_name' => 'asdf1.jpg'
+                    'file_name' => $fileName
                 ]
             ]);
 
@@ -54,11 +57,32 @@ class CreateMediaTest extends TestCase
         ));
     }
 
-    protected function validData($overrides = [])
+    /** @test */
+    public function it_will_reject_invalid_folder()
     {
-        return array_merge([
+        $fileName = 'asdf1.jpg';
+        $data = [
+            'folder_id' => 9999,
+            'file' => UploadedFile::fake()->image($fileName),
+        ];
+        $response = $this->postJson(route('admin.media.store'), $data);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['folder_id']);
+    }
+
+    /** @test */
+    public function it_will_reject_missing_file()
+    {
+        $data = [
             'folder_id' => $this->folder->id,
-            'file' => UploadedFile::fake()->image('asdf1.jpg'),
-        ], $overrides);
+            'file' => null,
+        ];
+        $response = $this->postJson(route('admin.media.store'), $data);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['file']);
     }
 }
