@@ -26,7 +26,6 @@ class UpdateMediaRequest extends FormRequest
         return [
             'name' => 'filled',
             'folder_id' => [
-                'required_without:name',
                 'nullable',
                 'exists:media_folders,id'
             ]
