@@ -82,4 +82,37 @@ class UpdateMediaTest extends TestCase
                 ]
             ]);
     }
+
+    /** @test */
+    public function it_will_reject_invalid_folder()
+    {
+        $response = $this->patchJson(
+            route('admin.media.update', ['id' => $this->media->id]),
+            [
+                'folder_id' => 99999,
+            ]
+        );
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['folder_id']);
+    }
+
+    /** @test */
+    public function it_will_make_sure_a_name_cant_be_removed()
+    {
+        $response1 = $this->patchJson(
+            route('admin.media.update', ['id' => $this->media->id]),
+            ['name' => '']
+        );
+
+        $response1->assertStatus(422)->assertJsonValidationErrors(['name']);
+
+        $response2 = $this->patchJson(
+            route('admin.media.update', ['id' => $this->media->id]),
+            ['name' => null]
+        );
+
+        $response2->assertStatus(422)->assertJsonValidationErrors(['name']);
+    }
 }
