@@ -15,7 +15,7 @@ class CreateMediaTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -25,6 +25,8 @@ class CreateMediaTest extends TestCase
             'name' => 'A folder',
             'parent_id' => null,
         ]);
+
+        config()->set('media.model', Media::class);
     }
 
     /** @test */
@@ -43,6 +45,7 @@ class CreateMediaTest extends TestCase
             ->assertJson([
                 'data' => [
                     'folder_id' => $data['folder_id'],
+                    'file_name' => 'asdf1.jpg'
                 ]
             ]);
 
