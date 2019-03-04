@@ -3,10 +3,11 @@
 namespace Optimus\Media\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Routing\Controller;
 use Optimus\Media\Models\MediaFolder;
 use Optimus\Media\Http\Resources\FolderResource;
+use Optimus\Media\Http\Requests\StoreFolderRequest;
+use Optimus\Media\Http\Requests\UpdateFolderRequest;
 
 class FoldersController extends Controller
 {
@@ -17,10 +18,8 @@ class FoldersController extends Controller
         return FolderResource::collection($folders);
     }
 
-    public function store(Request $request)
+    public function store(StoreFolderRequest $request)
     {
-        $this->validateFolder($request);
-
         $folder = MediaFolder::create($request->all());
 
         return new FolderResource($folder);
@@ -33,11 +32,9 @@ class FoldersController extends Controller
         return new FolderResource($folder);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateFolderRequest $request, $id)
     {
         $folder = MediaFolder::findOrFail($id);
-
-        $this->validateFolder($request, $folder);
 
         $folder->update($request->all());
 
@@ -53,21 +50,5 @@ class FoldersController extends Controller
         $folder->delete();
 
         return response(null, 204);
-    }
-
-    protected function validateFolder(Request $request, MediaFolder $folder = null)
-    {
-        $request->validate([
-            'name' => $folder ? 'filled' : 'required',
-            'parent_id' => [
-                'nullable',
-                Rule::exists('media_folders', 'id')
-                    ->where(function ($query) use ($folder) {
-                        $query->when($folder, function ($query) use ($folder) {
-                            $query->where('id', '<>', $folder->id);
-                        });
-                    })
-            ]
-        ]);
     }
 }

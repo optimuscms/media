@@ -30,7 +30,7 @@ class MediaController extends Controller
             PerformConversions::dispatch($media, ['400x300']);
         }
 
-        return new MediaResource($media);
+        return (new MediaResource($media))->response()->setStatusCode(201);
     }
 
     public function show($id)
