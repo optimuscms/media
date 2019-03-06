@@ -6,6 +6,7 @@ use Optimus\Users\Models\AdminUser;
 use Optimus\Users\UserServiceProvider;
 use Optimus\Media\MediaServiceProvider;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Optix\Media\MediaServiceProvider as OptixMediaServiceProvider;
 
 class TestCase extends BaseTestCase
 {
@@ -22,8 +23,8 @@ class TestCase extends BaseTestCase
     {
         return [
             UserServiceProvider::class,
-            \Optix\Media\MediaServiceProvider::class,
-            MediaServiceProvider::class
+            MediaServiceProvider::class,
+            OptixMediaServiceProvider::class
         ];
     }
 
@@ -41,7 +42,7 @@ class TestCase extends BaseTestCase
     {
         $user = AdminUser::create([
             'name' => 'Admin',
-            'email' => 'admin@optimuscms.com',
+            'email' => 'admin@optimus.test',
             'username' => 'admin',
             'password' => bcrypt('password')
         ]);

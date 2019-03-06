@@ -7,45 +7,34 @@ use Optimus\Media\Tests\TestCase;
 use Optimus\Media\Models\MediaFolder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-/**
- * @property MediaFolder folder1
- * @property MediaFolder folder2
- * @property Media media
- * @property string name2
- */
 class UpdateMediaTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $media;
+
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->signIn();
 
-        $this->folder1 = factory(MediaFolder::class)->create([
-            'name' => 'folder-1',
-            'parent_id' => null,
+        $folder = factory(MediaFolder::class)->create([
+            'name' => 'New folder name'
         ]);
-        $this->folder2 = factory(MediaFolder::class)->create([
-            'name' => 'folder-2',
-            'parent_id' => null,
-        ]);
+
         $this->media = factory(Media::class)->create([
-            'name' => 'name-1',
-            'folder_id' => $this->folder1->id,
+            'name' => 'Old name',
+            'folder_id' => $folder->id,
         ]);
-        $this->name2 = 'name-2';
     }
 
     /** @test */
-    public function it_can_update_the_name_and_folder()
+    public function it_can_change_the_name_of_a_media_item()
     {
         $response = $this->patchJson(
             route('admin.media.update', ['id' => $this->media->id]),
-            [
-                'name' => $this->name2,
-                'folder_id' => $this->folder2->id,
-            ]
+            $newData = ['name' => 'New name']
         );
 
         $response
@@ -55,20 +44,22 @@ class UpdateMediaTest extends TestCase
             ])
             ->assertJson([
                 'data' => [
-                    'name' => $this->name2,
-                    'folder_id' => $this->folder2->id,
+                    'name' => $newData['name'],
+                    'folder_id' => $this->media->folder_id,
                 ]
             ]);
     }
 
     /** @test */
-    public function it_can_set_folder_id_to_null()
+    public function it_can_move_a_media_item_into_another_folder()
     {
+        $newFolder = factory(MediaFolder::class)->create([
+            'name' => 'New folder name'
+        ]);
+
         $response = $this->patchJson(
             route('admin.media.update', ['id' => $this->media->id]),
-            [
-                'folder_id' => null,
-            ]
+            $newData = ['folder_id' => $newFolder->id]
         );
 
         $response
@@ -78,41 +69,60 @@ class UpdateMediaTest extends TestCase
             ])
             ->assertJson([
                 'data' => [
-                    'folder_id' => null,
+                    'name' => $this->media->name,
+                    'folder_id' => $newData['folder_id']
                 ]
             ]);
     }
 
     /** @test */
-    public function it_will_reject_invalid_folder()
+    public function it_can_move_a_media_item_into_the_root_folder()
     {
         $response = $this->patchJson(
             route('admin.media.update', ['id' => $this->media->id]),
-            [
-                'folder_id' => 99999,
-            ]
+            $newData = ['folder_id' => null]
+        );
+
+        $response
+            ->assertOk()
+            ->assertJsonStructure([
+                'data' => $this->expectedMediaJsonStructure()
+            ])
+            ->assertJson([
+                'data' => [
+                    'name' => $this->media->name,
+                    'folder_id' => $newData['folder_id']
+                ]
+            ]);
+    }
+
+    /** @test */
+    public function the_folder_id_must_be_an_existing_folder_id_if_not_null()
+    {
+        $response = $this->patchJson(
+            route('admin.media.update', ['id' => $this->media->id]),
+            ['folder_id' => 9999]
         );
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['folder_id']);
+            ->assertJsonValidationErrors([
+                'folder_id'
+            ]);
     }
 
     /** @test */
-    public function it_will_make_sure_a_name_cant_be_removed()
+    public function the_name_field_must_not_be_empty_when_present()
     {
-        $response1 = $this->patchJson(
+        $response = $this->patchJson(
             route('admin.media.update', ['id' => $this->media->id]),
             ['name' => '']
         );
 
-        $response1->assertStatus(422)->assertJsonValidationErrors(['name']);
-
-        $response2 = $this->patchJson(
-            route('admin.media.update', ['id' => $this->media->id]),
-            ['name' => null]
-        );
-
-        $response2->assertStatus(422)->assertJsonValidationErrors(['name']);
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'name'
+            ]);
     }
 }

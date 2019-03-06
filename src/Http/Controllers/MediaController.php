@@ -45,7 +45,8 @@ class MediaController extends Controller
         $media = Media::findOrFail($id);
 
         $media->update($request->only([
-            'folder_id', 'name'
+            'folder_id',
+            'name'
         ]));
 
         return new MediaResource($media);

@@ -6,40 +6,34 @@ use Optimus\Media\Tests\TestCase;
 use Optimus\Media\Models\MediaFolder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-/**
- * @property MediaFolder folder1
- * @property MediaFolder folder2
- */
 class UpdateFolderTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected $folder;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->folder1 = factory(MediaFolder::class)->create([
-            'name' => 'Folder 1',
-            'parent_id' => null,
-        ]);
-        $this->folder2 = factory(MediaFolder::class)->create([
-            'name' => 'Folder 2',
-            'parent_id' => null,
+        $this->signIn();
+
+        $parent = factory(MediaFolder::class)->create([
+            'name' => 'Old parent name'
         ]);
 
-        $this->signIn();
+        $this->folder = factory(MediaFolder::class)->create([
+            'name' => 'Old name',
+            'parent_id' => $parent->id
+        ]);
     }
 
     /** @test */
-    public function it_can_update_a_folder_name()
+    public function it_can_change_the_name_of_a_folder()
     {
-        $newData = [
-            'name' => 'New name',
-            'parent_id' => null
-        ];
         $response = $this->patchJson(
-            route('admin.media-folders.update', ['id' => $this->folder1->id]),
-            $newData
+            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            $newData = ['name' => 'New name']
         );
 
         $response
@@ -50,67 +44,83 @@ class UpdateFolderTest extends TestCase
             ->assertJson([
                 'data' => [
                     'name' => $newData['name'],
-                    'parent_id' => $newData['parent_id'],
+                    'parent_id' => $this->folder->parent_id,
                 ]
             ]);
     }
 
     /** @test */
-    public function it_will_reject_invalid_parent_folder()
+    public function it_can_move_a_folder_into_another_folder()
     {
-        $newData = [
-            'name' => 'New name',
-            'parent_id' => 9999
-        ];
+        $newParent = factory(MediaFolder::class)->create([
+            'name' => 'New parent name'
+        ]);
+
         $response = $this->patchJson(
-            route('admin.media-folders.update', ['id' => $this->folder1->id]),
-            $newData
+            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            $newData = ['parent_id' => $newParent->id]
+        );
+
+        $response
+            ->assertOk()
+            ->assertJsonStructure([
+                'data' => $this->expectedFolderJsonStructure()
+            ])
+            ->assertJson([
+                'data' => [
+                    'name' => $this->folder->name,
+                    'parent_id' => $newData['parent_id'],
+                ]
+            ]);
+    }
+    
+    /** @test */
+    public function it_can_move_a_folder_into_the_root()
+    {
+        $response = $this->patchJson(
+            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            $newData = ['parent_id' => null]
+        );
+
+        $response
+            ->assertJsonStructure([
+                'data' => $this->expectedFolderJsonStructure()
+            ])
+            ->assertJson([
+                'data' => [
+                    'name' => $this->folder->name,
+                    'parent_id' => $newData['parent_id']
+                ]
+            ]);
+    }
+
+    /** @test */
+    public function the_name_field_must_not_be_empty_when_present()
+    {
+        $response = $this->patchJson(
+            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            ['name' => '']
         );
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['parent_id']);
+            ->assertJsonValidationErrors([
+                'name'
+            ]);
     }
 
     /** @test */
-    public function it_will_reject_parent_equal_to_itself()
+    public function the_parent_id_field_must_be_an_existing_folder_id_if_not_null()
     {
-        $newData = [
-            'parent_id' => $this->folder1->id
-        ];
         $response = $this->patchJson(
-            route('admin.media-folders.update', ['id' => $this->folder1->id]),
-            $newData
+            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            ['parent_id' => 9999]
         );
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['parent_id']);
-    }
-
-    /** @test */
-    public function it_will_reject_missing_folder_name()
-    {
-        $response1 = $this->patchJson(
-            route('admin.media-folders.update', ['id' => $this->folder1->id]),
-            [
-                'name' => '',
-                'parent_id' => null
+            ->assertJsonValidationErrors([
+                'parent_id'
             ]);
-
-        $response1
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['name']);
-
-        $response2 = $this->patchJson(
-            route('admin.media-folders.update', ['id' => $this->folder1->id]),
-            [
-                'name' => null,
-                'parent_id' => null
-            ]);
-
-        $response2
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['name']);
     }
 }

@@ -24,9 +24,7 @@ class StoreFolderRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required',
-            ],
+            'name' => 'required',
             'parent_id' => [
                 'nullable',
                 'exists:media_folders,id',
