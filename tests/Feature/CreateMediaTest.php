@@ -2,15 +2,14 @@
 
 namespace Optimus\Media\Tests\Feature;
 
-use Optimus\Media\Models\Media;
 use Illuminate\Http\UploadedFile;
 use Optimus\Media\Tests\TestCase;
+use Illuminate\Support\Facades\Queue;
 use Optimus\Media\Models\MediaFolder;
+use Illuminate\Support\Facades\Storage;
+use Optix\Media\Jobs\PerformConversions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-/**
- * @property mixed folder
- */
 class CreateMediaTest extends TestCase
 {
     use RefreshDatabase;
@@ -21,24 +20,23 @@ class CreateMediaTest extends TestCase
 
         $this->signIn();
 
-        $this->folder = factory(MediaFolder::class)->create([
-            'name' => 'A folder',
-            'parent_id' => null,
+        Storage::fake('public');
+    }
+    
+    /** @test */
+    public function it_can_upload_media_to_the_root()
+    {
+        $image = UploadedFile::fake()->create('image.png')->size(64);
+
+        Queue::fake();
+
+        $response = $this->postJson(route('admin.media.store'), $data = [
+            'folder_id' => null,
+            'file' => $image
         ]);
 
-        config()->set('media.model', Media::class);
-    }
-
-    /** @test */
-    public function it_can_create_media()
-    {
-        $fileName = 'asdf1.jpg';
-        $data = [
-            'folder_id' => $this->folder->id,
-            'file' => UploadedFile::fake()->image($fileName),
-        ];
-
-        $response = $this->postJson(route('admin.media.store'), $data);
+        // Assert media thumbnail conversion ran...
+        Queue::assertPushed(PerformConversions::class);
 
         $response
             ->assertStatus(201)
@@ -48,41 +46,89 @@ class CreateMediaTest extends TestCase
             ->assertJson([
                 'data' => [
                     'folder_id' => $data['folder_id'],
-                    'file_name' => $fileName
+                    'name' => 'image',
+                    'file_name' => 'image.png',
+                    'extension' => 'png',
+                    'mime_type' => 'image/png',
+                    'size' => $image->getSize()
                 ]
             ]);
-
-        $this->assertNotNull($folder = Media::find(
-            $response->decodeResponseJson('data.id')
-        ));
     }
 
     /** @test */
-    public function it_will_reject_invalid_folder()
+    public function it_can_upload_media_into_a_folder()
     {
-        $fileName = 'asdf1.jpg';
-        $data = [
-            'folder_id' => 9999,
-            'file' => UploadedFile::fake()->image($fileName),
-        ];
-        $response = $this->postJson(route('admin.media.store'), $data);
+        $folder = factory(MediaFolder::class)->create();
+
+        $document = UploadedFile::fake()->create('document.doc')->size(128);
+
+        $response = $this->postJson(route('admin.media.store'), $data = [
+            'folder_id' => $folder->id,
+            'file' => $document
+        ]);
 
         $response
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['folder_id']);
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'data' => $this->expectedMediaJsonStructure()
+            ])
+            ->assertJson([
+                'data' => [
+                    'folder_id' => $data['folder_id'],
+                    'name' => 'document',
+                    'file_name' => 'document.doc',
+                    'extension' => 'doc',
+                    'mime_type' => 'application/msword',
+                    'size' => $document->getSize()
+                ]
+            ]);
     }
 
     /** @test */
-    public function it_will_reject_missing_file()
+    public function it_will_upload_media_to_the_root_if_a_folder_id_is_not_present()
     {
-        $data = [
-            'folder_id' => $this->folder->id,
-            'file' => null,
-        ];
-        $response = $this->postJson(route('admin.media.store'), $data);
+        $audio = UploadedFile::fake()->create('audio.mp3')->size(32);
+
+        $response = $this->postJson(route('admin.media.store'), [
+            'file' => $audio
+        ]);
 
         $response
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['file']);
+            ->assertJsonStructure([
+                'data' => $this->expectedMediaJsonStructure()
+            ])
+            ->assertJson([
+                'data' => [
+                    'folder_id' => null,
+                    'name' => 'audio',
+                    'file_name' => 'audio.mp3',
+                    'extension' => 'mp3',
+                    'mime_type' => 'audio/mpeg',
+                    'size' => $audio->getSize()
+                ]
+            ]);
+    }
+
+    /** @test */
+    public function it_will_only_perform_the_media_thumbnail_conversion_on_images()
+    {
+        $document = UploadedFile::fake()->create('document.doc');
+        $image = UploadedFile::fake()->image('image.png');
+
+        Queue::fake();
+
+        $this->postJson(route('admin.media.store'), [
+            'file' => $document
+        ]);
+
+        // Assert conversion did not run...
+        Queue::assertNotPushed(PerformConversions::class);
+
+        $this->postJson(route('admin.media.store'), [
+            'file' => $image
+        ]);
+
+        // Assert conversion ran...
+        Queue::assertPushed(PerformConversions::class);
     }
 }

@@ -43,10 +43,10 @@ class CreateFolderTest extends TestCase
     }
 
     /** @test */
-    public function it_will_add_folders_to_the_root_if_a_parent_id_is_not_provided()
+    public function it_will_add_folders_to_the_root_if_a_parent_id_is_not_present()
     {
         $response = $this->postJson(route('admin.media-folders.store'), $data = [
-            'name' => 'Name',
+            'name' => 'Name'
         ]);
 
         $response

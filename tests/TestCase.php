@@ -2,6 +2,7 @@
 
 namespace Optimus\Media\Tests;
 
+use Optimus\Media\Models\Media;
 use Optimus\Users\Models\AdminUser;
 use Optimus\Users\UserServiceProvider;
 use Optimus\Media\MediaServiceProvider;
@@ -36,6 +37,9 @@ class TestCase extends BaseTestCase
             'database' => ':memory:',
             'prefix' => ''
         ]);
+
+        $app['config']->set('media.disk', 'public');
+        $app['config']->set('media.model', Media::class);
     }
 
     protected function signIn()
