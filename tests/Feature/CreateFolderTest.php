@@ -18,13 +18,12 @@ class CreateFolderTest extends TestCase
     }
 
     /** @test */
-    public function it_can_create_a_folder()
+    public function it_can_add_a_folder_to_the_root()
     {
-        $data = [
-            'name' => 'New name',
+        $response = $this->postJson(route('admin.media-folders.store'), $data = [
+            'name' => 'Name',
             'parent_id' => null
-        ];
-        $response = $this->postJson(route('admin.media-folders.store'), $data);
+        ]);
 
         $response
             ->assertStatus(201)
@@ -34,48 +33,113 @@ class CreateFolderTest extends TestCase
             ->assertJson([
                 'data' => [
                     'name' => $data['name'],
-                    'parent_id' => $data['parent_id'],
+                    'parent_id' => $data['parent_id']
                 ]
             ]);
 
-        $this->assertNotNull($folder = MediaFolder::find(
+        $this->assertFolderExists(
             $response->decodeResponseJson('data.id')
-        ));
+        );
     }
 
     /** @test */
-    public function it_will_reject_invalid_parent_folder()
+    public function it_will_add_folders_to_the_root_if_a_parent_id_is_not_provided()
     {
-        $data = [
-            'name' => 'New name',
-            'parent_id' => 9999
-        ];
-        $response = $this->postJson(route('admin.media-folders.store'), $data);
+        $response = $this->postJson(route('admin.media-folders.store'), $data = [
+            'name' => 'Name',
+        ]);
+
+        $response
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'data' => $this->expectedFolderJsonStructure()
+            ])
+            ->assertJson([
+                'data' => [
+                    'name' => $data['name'],
+                    'parent_id' => null
+                ]
+            ]);
+
+        $this->assertFolderExists(
+            $response->decodeResponseJson('data.id')
+        );
+    }
+
+    /** @test */
+    public function it_can_add_a_folder_into_another_folder()
+    {
+        $parent = factory(MediaFolder::class)->create([
+            'name' => 'Parent name'
+        ]);
+
+        $response = $this->postJson(route('admin.media-folders.store'), $data = [
+            'name' => 'Name',
+            'parent_id' => $parent->id
+        ]);
+
+        $response
+            ->assertStatus(201)
+            ->assertJsonStructure([
+                'data' => $this->expectedFolderJsonStructure()
+            ])
+            ->assertJson([
+                'data' => [
+                    'name' => $data['name'],
+                    'parent_id' => $data['parent_id']
+                ]
+            ]);
+
+        $this->assertFolderExists(
+            $response->decodeResponseJson('data.id')
+        );
+    }
+    
+    /** @test */
+    public function the_name_field_must_be_present()
+    {
+        $response = $this->postJson(route('admin.media-folders.store'));
 
         $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['parent_id']);
+            ->assertJsonValidationErrors([
+                'name'
+            ]);
+    }
+    
+    /** @test */
+    public function the_name_field_must_not_be_empty_when_present()
+    {
+        $response = $this->postJson(route('admin.media-folders.store'), [
+            'name' => ''
+        ]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'name'
+            ]);
     }
 
     /** @test */
-    public function it_will_reject_missing_folder_name()
+    public function the_parent_id_field_must_be_an_existing_folder_id_if_not_null()
     {
-        $response1 = $this->postJson(route('admin.media-folders.store'), [
-            'name' => '',
-            'parent_id' => null
+        $response = $this->postJson(route('admin.media-folders.store'), [
+            'name' => 'New name',
+            'parent_id' => 9999
         ]);
 
-        $response1
+        $response
             ->assertStatus(422)
-            ->assertJsonValidationErrors(['name']);
+            ->assertJsonValidationErrors([
+                'parent_id'
+            ]);
+    }
 
-        $response2 = $this->postJson(route('admin.media-folders.store'), [
-            'name' => null,
-            'parent_id' => null
-        ]);
-
-        $response2
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['name']);
+    protected function assertFolderExists($id)
+    {
+        $this->assertTrue(
+            MediaFolder::where('id', $id)->exists()
+        );
     }
 }

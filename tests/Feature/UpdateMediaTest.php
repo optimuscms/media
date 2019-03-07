@@ -25,7 +25,7 @@ class UpdateMediaTest extends TestCase
 
         $this->media = factory(Media::class)->create([
             'name' => 'Old name',
-            'folder_id' => $folder->id,
+            'folder_id' => $folder->id
         ]);
     }
 
@@ -45,7 +45,7 @@ class UpdateMediaTest extends TestCase
             ->assertJson([
                 'data' => [
                     'name' => $newData['name'],
-                    'folder_id' => $this->media->folder_id,
+                    'folder_id' => $this->media->folder_id
                 ]
             ]);
     }

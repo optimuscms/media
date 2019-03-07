@@ -44,7 +44,7 @@ class UpdateFolderTest extends TestCase
             ->assertJson([
                 'data' => [
                     'name' => $newData['name'],
-                    'parent_id' => $this->folder->parent_id,
+                    'parent_id' => $this->folder->parent_id
                 ]
             ]);
     }
@@ -69,7 +69,7 @@ class UpdateFolderTest extends TestCase
             ->assertJson([
                 'data' => [
                     'name' => $this->folder->name,
-                    'parent_id' => $newData['parent_id'],
+                    'parent_id' => $newData['parent_id']
                 ]
             ]);
     }
