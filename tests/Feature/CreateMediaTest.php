@@ -131,4 +131,47 @@ class CreateMediaTest extends TestCase
         // Assert conversion ran...
         Queue::assertPushed(PerformConversions::class);
     }
+
+    /** @test */
+    public function the_file_field_must_be_present()
+    {
+        $response = $this->postJson(route('admin.media.store'));
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'file'
+            ]);
+    }
+
+    /** @test */
+    public function the_file_field_must_be_a_file_when_present()
+    {
+        $response = $this->postJson(route('admin.media.store'), [
+            'file' => 'not-a-file'
+        ]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'file'
+            ]);
+    }
+
+    /** @test */
+    public function the_folder_id_field_must_be_an_existing_folder_id_if_not_null()
+    {
+        $document = UploadedFile::fake()->create('document.doc');
+
+        $response = $this->postJson(route('admin.media.store'), [
+            'file' => $document,
+            'folder_id' => 9999
+        ]);
+
+        $response
+            ->assertStatus(422)
+            ->assertJsonValidationErrors([
+                'folder_id'
+            ]);
+    }
 }
