@@ -27,7 +27,9 @@ class MediaController extends Controller
             ->upload();
 
         if (starts_with($media->mime_type, 'image')) {
-            PerformConversions::dispatch($media, ['400x300']);
+            PerformConversions::dispatch($media, [
+                'media-thumbnail'
+            ]);
         }
 
         return (new MediaResource($media))->response()->setStatusCode(201);

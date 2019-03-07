@@ -20,7 +20,7 @@ class MediaFolder extends Model
     public function scopeFilter(Builder $query, Request $request)
     {
         if ($request->filled('parent')) {
-            $parent = $request->query('parent');
+            $parent = $request->input('parent');
             $query->where('parent_id', $parent === 'root' ? null : $parent);
         }
     }

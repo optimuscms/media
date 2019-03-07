@@ -24,7 +24,7 @@ class MediaServiceProvider extends ServiceProvider
 
         // Conversions
         $this->app[ConversionManager::class]
-             ->register('400x300', function ($image) {
+             ->register('media-thumbnail', function ($image) {
                  return $image->fit(400, 300);
              });
     }
