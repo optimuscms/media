@@ -23,7 +23,7 @@ class GetMediaTest extends TestCase
     {
         $media = factory(Media::class, 3)->create();
 
-        $response = $this->getJson(route('admin.media.index'));
+        $response = $this->getJson(route('admin.api.media.index'));
 
         $response
             ->assertOk()
@@ -53,7 +53,7 @@ class GetMediaTest extends TestCase
         ]);
 
         $response = $this->getJson(
-            route('admin.media.index') . '?folder=' . $folder->id
+            route('admin.api.media.index') . '?folder=' . $folder->id
         );
 
         $response
@@ -78,7 +78,7 @@ class GetMediaTest extends TestCase
     {
         $media = factory(Media::class)->create();
 
-        $response = $this->getJson(route('admin.media.show', [
+        $response = $this->getJson(route('admin.api.media.show', [
             'id' => $media->id
         ]));
 

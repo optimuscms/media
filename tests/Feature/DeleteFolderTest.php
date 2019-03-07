@@ -21,7 +21,7 @@ class DeleteFolderTest extends TestCase
         ]);
 
         $response = $this->deleteJson(
-            route('admin.media-folders.destroy', ['id' => $folder->id])
+            route('admin.api.media-folders.destroy', ['id' => $folder->id])
         );
 
         $response->assertStatus(204);

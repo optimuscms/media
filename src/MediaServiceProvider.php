@@ -39,8 +39,8 @@ class MediaServiceProvider extends ServiceProvider
     protected function registerAdminRoutes()
     {
         $this->app['router']
-             ->name('admin.')
-             ->prefix('admin')
+             ->name('admin.api.')
+             ->prefix('admin/api')
              ->middleware('web', 'auth:admin')
              ->namespace($this->controllerNamespace)
              ->group(function ($router) {

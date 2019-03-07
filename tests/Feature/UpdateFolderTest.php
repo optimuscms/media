@@ -32,7 +32,7 @@ class UpdateFolderTest extends TestCase
     public function it_can_change_the_name_of_a_folder()
     {
         $response = $this->patchJson(
-            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            route('admin.api.media-folders.update', ['id' => $this->folder->id]),
             $newData = ['name' => 'New name']
         );
 
@@ -57,7 +57,7 @@ class UpdateFolderTest extends TestCase
         ]);
 
         $response = $this->patchJson(
-            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            route('admin.api.media-folders.update', ['id' => $this->folder->id]),
             $newData = ['parent_id' => $newParent->id]
         );
 
@@ -78,7 +78,7 @@ class UpdateFolderTest extends TestCase
     public function it_can_move_a_folder_into_the_root()
     {
         $response = $this->patchJson(
-            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            route('admin.api.media-folders.update', ['id' => $this->folder->id]),
             $newData = ['parent_id' => null]
         );
 
@@ -98,7 +98,7 @@ class UpdateFolderTest extends TestCase
     public function the_name_field_must_not_be_empty_when_present()
     {
         $response = $this->patchJson(
-            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            route('admin.api.media-folders.update', ['id' => $this->folder->id]),
             ['name' => '']
         );
 
@@ -113,7 +113,7 @@ class UpdateFolderTest extends TestCase
     public function the_parent_id_field_must_be_an_existing_folder_id_if_not_null()
     {
         $response = $this->patchJson(
-            route('admin.media-folders.update', ['id' => $this->folder->id]),
+            route('admin.api.media-folders.update', ['id' => $this->folder->id]),
             ['parent_id' => 9999]
         );
 

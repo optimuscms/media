@@ -20,7 +20,7 @@ class CreateFolderTest extends TestCase
     /** @test */
     public function it_can_add_a_folder_to_the_root()
     {
-        $response = $this->postJson(route('admin.media-folders.store'), $data = [
+        $response = $this->postJson(route('admin.api.media-folders.store'), $data = [
             'name' => 'Name',
             'parent_id' => null
         ]);
@@ -45,7 +45,7 @@ class CreateFolderTest extends TestCase
     /** @test */
     public function it_will_add_folders_to_the_root_if_a_parent_id_is_not_present()
     {
-        $response = $this->postJson(route('admin.media-folders.store'), $data = [
+        $response = $this->postJson(route('admin.api.media-folders.store'), $data = [
             'name' => 'Name'
         ]);
 
@@ -73,7 +73,7 @@ class CreateFolderTest extends TestCase
             'name' => 'Parent name'
         ]);
 
-        $response = $this->postJson(route('admin.media-folders.store'), $data = [
+        $response = $this->postJson(route('admin.api.media-folders.store'), $data = [
             'name' => 'Name',
             'parent_id' => $parent->id
         ]);
@@ -98,7 +98,7 @@ class CreateFolderTest extends TestCase
     /** @test */
     public function the_name_field_must_be_present()
     {
-        $response = $this->postJson(route('admin.media-folders.store'));
+        $response = $this->postJson(route('admin.api.media-folders.store'));
 
         $response
             ->assertStatus(422)
@@ -110,7 +110,7 @@ class CreateFolderTest extends TestCase
     /** @test */
     public function the_name_field_must_not_be_empty_when_present()
     {
-        $response = $this->postJson(route('admin.media-folders.store'), [
+        $response = $this->postJson(route('admin.api.media-folders.store'), [
             'name' => ''
         ]);
 
@@ -124,7 +124,7 @@ class CreateFolderTest extends TestCase
     /** @test */
     public function the_parent_id_field_must_be_an_existing_folder_id_if_not_null()
     {
-        $response = $this->postJson(route('admin.media-folders.store'), [
+        $response = $this->postJson(route('admin.api.media-folders.store'), [
             'name' => 'New name',
             'parent_id' => 9999
         ]);
