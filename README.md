@@ -49,7 +49,9 @@ List all available folders that media items can be added to.
 
 **Parameters**
 
-None
+| Parameter | Required? | Type  | Description    |
+|-----------|-----------|-------|----------------|
+| parent      |    ✗      | int  | A folder ID. When provided will only show folders nested inside this folder. |
 
 **Example Response**
 
@@ -181,7 +183,10 @@ List available media items.
 
 **Parameters**
 
-None
+| Parameter | Required? | Type  | Description    |
+|-----------|-----------|-------|----------------|
+| folder      |    ✗      | int  | Folder ID. When provided will only show media items from this folder. |
+
 
 **Example Response**
 
