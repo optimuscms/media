@@ -25,16 +25,19 @@ Appropriate HTTP status codes are provided, and these should be used to check th
 **Folders**
  - [List folders](#folders-all)
  - [Get folder](#folders-get)
+ - [Create folder](#folders-create)
  - [Update folder](#folders-update)
  - [Delete folder](#folders-delete)
  
 **Media Items**
  - [List media items](#media-all)
  - [Get media item](#media-get)
+ - [Create media item](#media-create)
  - [Update media item](#media-update)
  - [Delete media item](#media-delete)
 
 <a name="folders-all"></a>
+### List folders
 ```http
 GET /admin/media-folders
 ```
@@ -67,6 +70,7 @@ None
 ```
 
 <a name="folders-get"></a>
+### Get folder
 ```http
 GET /admin/media-folders/{id}
 ```
@@ -93,6 +97,7 @@ Retrieve details for a specific folder.
 ```
 
 <a name="folders-update"></a>
+### Update folder
 ```http
 PUT/PATCH /admin/media-folders/{id}
 ```
@@ -120,6 +125,7 @@ Update the details of a folder.
 ```
 
 <a name="folders-create"></a>
+### Create folder
 ```http
 POST /admin/media-folders
 ```
@@ -145,6 +151,7 @@ Create a new folder.
 }
 ```
 <a name="folders-delete"></a>
+### Delete folder
 ```http
 DELETE /admin/media-folders/{id}
 ```
@@ -162,6 +169,7 @@ Delete a folder.
 The HTTP status code will be 204 if successful.
 
 <a name="media-all"></a>
+### List media items
 ```http
 GET /admin/media
 ```
@@ -202,6 +210,7 @@ None
 ```
 
 <a name="media-get"></a>
+### Get media item
 ```http
 GET /admin/media/{id}
 ```
@@ -231,6 +240,7 @@ Retrieve details of a specific media item.
 ```
 
 <a name="media-update"></a>
+### Update media item
 ```http
 PUT/PATCH /admin/media/{id} 
 ```
@@ -261,6 +271,7 @@ Update the details of a single media item.
 ```
 
 <a name="media-create"></a>
+### Create media item
 ```http
 POST /admin/media
 ```
@@ -292,6 +303,7 @@ Create and store a new media item.
 ```
 
 <a name="media-delete"></a>
+### Delete media item
 ```http
 DELETE /admin/media/{id}
 ```
