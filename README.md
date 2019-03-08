@@ -42,7 +42,7 @@ Appropriate HTTP status codes are provided, and these should be used to check th
 <a name="folders-all"></a>
 ### List folders
 ```http
-GET /admin/media-folders
+GET /admin/api/media-folders
 ```
 
 List all available folders that media items can be added to.
@@ -75,7 +75,7 @@ None
 <a name="folders-get"></a>
 ### Get folder
 ```http
-GET /admin/media-folders/{id}
+GET /admin/api/media-folders/{id}
 ```
 
 Retrieve details for a specific folder.
@@ -102,7 +102,7 @@ Retrieve details for a specific folder.
 <a name="folders-update"></a>
 ### Update folder
 ```http
-PUT/PATCH /admin/media-folders/{id}
+PUT/PATCH /admin/api/media-folders/{id}
 ```
 
 Update the details of a folder.
@@ -130,7 +130,7 @@ Update the details of a folder.
 <a name="folders-create"></a>
 ### Create folder
 ```http
-POST /admin/media-folders
+POST /admin/api/media-folders
 ```
 
 Create a new folder.
@@ -156,7 +156,7 @@ Create a new folder.
 <a name="folders-delete"></a>
 ### Delete folder
 ```http
-DELETE /admin/media-folders/{id}
+DELETE /admin/api/media-folders/{id}
 ```
 
 Delete a folder.
@@ -174,7 +174,7 @@ The HTTP status code will be 204 if successful.
 <a name="media-all"></a>
 ### List media items
 ```http
-GET /admin/media
+GET /admin/api/media
 ```
 
 List available media items.
@@ -215,7 +215,7 @@ None
 <a name="media-get"></a>
 ### Get media item
 ```http
-GET /admin/media/{id}
+GET /admin/api/media/{id}
 ```
 
 Retrieve details of a specific media item.
@@ -245,7 +245,7 @@ Retrieve details of a specific media item.
 <a name="media-update"></a>
 ### Update media item
 ```http
-PUT/PATCH /admin/media/{id} 
+PUT/PATCH /admin/api/media/{id} 
 ```
 
 Update the details of a single media item.
@@ -276,7 +276,7 @@ Update the details of a single media item.
 <a name="media-create"></a>
 ### Create media item
 ```http
-POST /admin/media
+POST /admin/api/media
 ```
 
 Create and store a new media item.
@@ -308,7 +308,7 @@ Create and store a new media item.
 <a name="media-delete"></a>
 ### Delete media item
 ```http
-DELETE /admin/media/{id}
+DELETE /admin/api/media/{id}
 ```
 
 Delete a media item.
