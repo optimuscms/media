@@ -6,7 +6,9 @@ and organise them into folders.
 ## Installation
 This package can be installed through Composer.
 
-`composer require optimuscms/media`
+```bash
+composer require optimuscms/media
+```
 
 In Laravel 5.5 and above the package will autoregister the service provider. 
 
