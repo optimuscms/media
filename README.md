@@ -1,9 +1,21 @@
 # Media
 
 ## Usage
+This package can be installed through Composer.
 
-To get started, add `\Optimus\Media\MediaServiceProvider` to your Laravel application's `config/app.php` providers array. 
-You will then be able to start calling the below API routes from your application.
+`composer require optimuscms/media`
+
+In Laravel 5.5 and above the package will autoregister the service provider. 
+
+In Laravel 5.4 you must install this service provider:
+```php
+// config/app.php
+'providers' => [
+    ...
+    Optimus\Media\MediaServiceProvider::class,
+    ...
+];
+```
 
 ## API Routes
 
