@@ -35,7 +35,9 @@ Appropriate HTTP status codes are provided, and these should be used to check th
  - [Delete media item](#media-delete)
 
 <a name="folders-all"></a>
-### GET `/admin/media-folders`
+```http
+GET /admin/media-folders
+```
 
 List all available folders that media items can be added to.
 
@@ -65,7 +67,9 @@ None
 ```
 
 <a name="folders-get"></a>
-### GET `/admin/media-folders/{id}`
+```http
+GET /admin/media-folders/{id}
+```
 
 Retrieve details for a specific folder.
 
@@ -89,7 +93,9 @@ Retrieve details for a specific folder.
 ```
 
 <a name="folders-update"></a>
-### PUT/PATCH `/admin/media-folders/{id}`
+```http
+PUT/PATCH /admin/media-folders/{id}
+```
 
 Update the details of a folder.
 
@@ -114,7 +120,9 @@ Update the details of a folder.
 ```
 
 <a name="folders-create"></a>
-### POST `/admin/media-folders`
+```http
+POST /admin/media-folders
+```
 
 Create a new folder.
 
@@ -137,7 +145,9 @@ Create a new folder.
 }
 ```
 <a name="folders-delete"></a>
-### DELETE `/admin/media-folders/{id}`
+```http
+DELETE /admin/media-folders/{id}
+```
 
 Delete a folder.
 
@@ -152,7 +162,9 @@ Delete a folder.
 The HTTP status code will be 204 if successful.
 
 <a name="media-all"></a>
-### GET `/admin/media`
+```http
+GET /admin/media
+```
 
 List available media items.
 
@@ -190,7 +202,9 @@ None
 ```
 
 <a name="media-get"></a>
-### GET `/admin/media/{id}`
+```http
+GET /admin/media/{id}
+```
 
 Retrieve details of a specific media item.
 
@@ -217,7 +231,9 @@ Retrieve details of a specific media item.
 ```
 
 <a name="media-update"></a>
-### PUT/PATCH 
+```http
+PUT/PATCH /admin/media/{id} 
+```
 
 Update the details of a single media item.
 
@@ -245,7 +261,9 @@ Update the details of a single media item.
 ```
 
 <a name="media-create"></a>
-### POST `/admin/media`
+```http
+POST /admin/media
+```
 
 Create and store a new media item.
 
@@ -274,7 +292,9 @@ Create and store a new media item.
 ```
 
 <a name="media-delete"></a>
-### DELETE `/admin/media/{id}`
+```http
+DELETE /admin/media/{id}
+```
 
 Delete a media item.
 
