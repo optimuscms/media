@@ -4,7 +4,7 @@ namespace Optimus\Media\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateMediaRequest extends FormRequest
+class UpdateFolderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class UpdateMediaRequest extends FormRequest
     {
         return [
             'name' => 'filled',
-            'folder_id' => [
+            'parent_id' => [
                 'nullable',
                 'exists:media_folders,id'
             ]

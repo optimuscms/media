@@ -27,10 +27,12 @@ class MediaController extends Controller
             ->upload();
 
         if (starts_with($media->mime_type, 'image')) {
-            PerformConversions::dispatch($media, ['400x300']);
+            PerformConversions::dispatch($media, [
+                'media-thumbnail'
+            ]);
         }
 
-        return new MediaResource($media);
+        return (new MediaResource($media))->response()->setStatusCode(201);
     }
 
     public function show($id)
@@ -45,7 +47,8 @@ class MediaController extends Controller
         $media = Media::findOrFail($id);
 
         $media->update($request->only([
-            'folder_id', 'name'
+            'folder_id',
+            'name'
         ]));
 
         return new MediaResource($media);

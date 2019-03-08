@@ -24,7 +24,7 @@ class MediaServiceProvider extends ServiceProvider
 
         // Conversions
         $this->app[ConversionManager::class]
-             ->register('400x300', function ($image) {
+             ->register('media-thumbnail', function ($image) {
                  return $image->fit(400, 300);
              });
     }
@@ -39,8 +39,8 @@ class MediaServiceProvider extends ServiceProvider
     protected function registerAdminRoutes()
     {
         $this->app['router']
-             ->name('admin.')
-             ->prefix('admin')
+             ->name('admin.api.')
+             ->prefix('admin/api')
              ->middleware('web', 'auth:admin')
              ->namespace($this->controllerNamespace)
              ->group(function ($router) {
