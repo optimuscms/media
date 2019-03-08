@@ -3,7 +3,7 @@
 This package provides the core backend functionality within the CMS to upload media (image) files 
 and organise them into folders.
 
-## Usage
+## Installation
 This package can be installed through Composer.
 
 `composer require optimuscms/media`
