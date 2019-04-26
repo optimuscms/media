@@ -8,9 +8,9 @@
         }
     ],
     "require": {
-        "optix/media": "dev-master",
         "laravel/framework": "^5.7",
-        "optimuscms/users": "^0.2"
+        "optimuscms/users": "^0.2",
+        "optix/media": "^0.2"
     },
     "require-dev": {
         "orchestra/testbench": "^3.7"

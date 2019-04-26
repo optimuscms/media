@@ -2,7 +2,7 @@
 
 namespace Optimus\Media;
 
-use Optix\Media\ConversionManager;
+use Optix\Media\ConversionRegistry;
 use Illuminate\Support\ServiceProvider;
 
 class MediaServiceProvider extends ServiceProvider
@@ -23,7 +23,7 @@ class MediaServiceProvider extends ServiceProvider
         $this->registerAdminRoutes();
 
         // Conversions
-        $this->app[ConversionManager::class]
+        $this->app[ConversionRegistry::class]
              ->register('media-thumbnail', function ($image) {
                  return $image->fit(400, 300);
              });
