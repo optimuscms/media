@@ -18,8 +18,8 @@ class MediaResource extends Resource
             'thumbnail_url' => $this->getUrl('media-thumbnail'),
             'mime_type' => $this->mime_type,
             'size' => $this->size,
-            'collection' => $this->whenPivotLoaded('mediables', function () {
-                return $this->pivot->collection;
+            'group' => $this->whenPivotLoaded('mediables', function () {
+                return $this->pivot->group;
             }),
             'updated_at' => (string) $this->updated_at,
             'created_at' => (string) $this->created_at
