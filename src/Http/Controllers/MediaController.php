@@ -15,7 +15,7 @@ class MediaController extends Controller
 {
     public function index(Request $request)
     {
-        $media = Media::filter($request)->get();
+        $media = Media::applyFilters($request->all())->get();
 
         return MediaResource::collection($media);
     }
@@ -23,7 +23,11 @@ class MediaController extends Controller
     public function store(StoreMediaRequest $request)
     {
         $media = MediaUploader::fromFile($request->file('file'))
-            ->withAttributes($request->only('folder_id'))
+            ->withAttributes($request->only([
+                'folder_id',
+                'caption',
+                'alt_text',
+            ]))
             ->upload();
 
         if (starts_with($media->mime_type, 'image')) {
@@ -45,9 +49,11 @@ class MediaController extends Controller
     public function update(UpdateMediaRequest $request, $id)
     {
         $media = Media::findOrFail($id);
-
+        
         $media->update($request->only([
             'folder_id',
+            'caption',
+            'alt_text',
             'name'
         ]));
 

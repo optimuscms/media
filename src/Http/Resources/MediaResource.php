@@ -13,6 +13,8 @@ class MediaResource extends Resource
             'folder_id' => $this->folder_id,
             'name' => $this->name,
             'file_name' => $this->file_name,
+            'caption' => $this->caption,
+            'alt_text' => $this->alt_text,
             'extension' => $this->extension,
             'url' => $this->getUrl(),
             'thumbnail_url' => $this->getUrl('media-thumbnail'),

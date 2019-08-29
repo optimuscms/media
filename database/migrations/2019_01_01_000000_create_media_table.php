@@ -28,6 +28,8 @@ class CreateMediaTable extends Migration
             $table->string('disk');
             $table->string('mime_type');
             $table->unsignedInteger('size');
+            $table->string('caption')->nullable();
+            $table->string('alt_text')->nullable();
             $table->timestamps();
 
             $table->foreign('folder_id')
