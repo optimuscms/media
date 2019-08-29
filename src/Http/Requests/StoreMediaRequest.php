@@ -27,12 +27,12 @@ class StoreMediaRequest extends FormRequest
             'file' => [
                 'required',
                 'file',
-                'max:' . config('media.max_file_size', 5120)
+                'max:'.config('media.max_file_size', 5120),
             ],
             'folder_id' => [
                 'nullable',
-                'exists:media_folders,id'
-            ]
+                'exists:media_folders,id',
+            ],
         ];
     }
 }

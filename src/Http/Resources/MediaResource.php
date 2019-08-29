@@ -24,7 +24,7 @@ class MediaResource extends Resource
                 return $this->pivot->group;
             }),
             'updated_at' => (string) $this->updated_at,
-            'created_at' => (string) $this->created_at
+            'created_at' => (string) $this->created_at,
         ];
     }
 }

@@ -27,8 +27,8 @@ class UpdateMediaRequest extends FormRequest
             'name' => 'filled',
             'folder_id' => [
                 'nullable',
-                'exists:media_folders,id'
-            ]
+                'exists:media_folders,id',
+            ],
         ];
     }
 }

@@ -32,7 +32,7 @@ class MediaController extends Controller
 
         if (starts_with($media->mime_type, 'image')) {
             PerformConversions::dispatch($media, [
-                'media-thumbnail'
+                'media-thumbnail',
             ]);
         }
 
@@ -49,12 +49,12 @@ class MediaController extends Controller
     public function update(UpdateMediaRequest $request, $id)
     {
         $media = Media::findOrFail($id);
-        
+
         $media->update($request->only([
             'folder_id',
             'caption',
             'alt_text',
-            'name'
+            'name',
         ]));
 
         return new MediaResource($media);

@@ -12,11 +12,11 @@ class MediaServiceProvider extends ServiceProvider
     public function boot()
     {
         // Migrations
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
         // Config
         $this->publishes([
-            __DIR__ . '/../config/media.php' => config_path('media.php')
+            __DIR__.'/../config/media.php' => config_path('media.php'),
         ], 'config');
 
         // Routes
@@ -32,7 +32,7 @@ class MediaServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/media.php', 'media'
+            __DIR__.'/../config/media.php', 'media'
         );
     }
 

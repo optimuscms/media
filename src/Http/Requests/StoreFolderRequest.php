@@ -28,7 +28,7 @@ class StoreFolderRequest extends FormRequest
             'parent_id' => [
                 'nullable',
                 'exists:media_folders,id',
-            ]
+            ],
         ];
     }
 }

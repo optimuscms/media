@@ -19,12 +19,12 @@ class UpdateFolderTest extends TestCase
         $this->signIn();
 
         $parent = factory(MediaFolder::class)->create([
-            'name' => 'Old parent name'
+            'name' => 'Old parent name',
         ]);
 
         $this->folder = factory(MediaFolder::class)->create([
             'name' => 'Old name',
-            'parent_id' => $parent->id
+            'parent_id' => $parent->id,
         ]);
     }
 
@@ -39,13 +39,13 @@ class UpdateFolderTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonStructure([
-                'data' => $this->expectedFolderJsonStructure()
+                'data' => $this->expectedFolderJsonStructure(),
             ])
             ->assertJson([
                 'data' => [
                     'name' => $newData['name'],
-                    'parent_id' => $this->folder->parent_id
-                ]
+                    'parent_id' => $this->folder->parent_id,
+                ],
             ]);
     }
 
@@ -53,7 +53,7 @@ class UpdateFolderTest extends TestCase
     public function it_can_move_a_folder_into_another_folder()
     {
         $newParent = factory(MediaFolder::class)->create([
-            'name' => 'New parent name'
+            'name' => 'New parent name',
         ]);
 
         $response = $this->patchJson(
@@ -64,16 +64,16 @@ class UpdateFolderTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonStructure([
-                'data' => $this->expectedFolderJsonStructure()
+                'data' => $this->expectedFolderJsonStructure(),
             ])
             ->assertJson([
                 'data' => [
                     'name' => $this->folder->name,
-                    'parent_id' => $newData['parent_id']
-                ]
+                    'parent_id' => $newData['parent_id'],
+                ],
             ]);
     }
-    
+
     /** @test */
     public function it_can_move_a_folder_into_the_root()
     {
@@ -84,13 +84,13 @@ class UpdateFolderTest extends TestCase
 
         $response
             ->assertJsonStructure([
-                'data' => $this->expectedFolderJsonStructure()
+                'data' => $this->expectedFolderJsonStructure(),
             ])
             ->assertJson([
                 'data' => [
                     'name' => $this->folder->name,
-                    'parent_id' => $newData['parent_id']
-                ]
+                    'parent_id' => $newData['parent_id'],
+                ],
             ]);
     }
 
@@ -105,7 +105,7 @@ class UpdateFolderTest extends TestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'name'
+                'name',
             ]);
     }
 
@@ -120,7 +120,7 @@ class UpdateFolderTest extends TestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'parent_id'
+                'parent_id',
             ]);
     }
 }

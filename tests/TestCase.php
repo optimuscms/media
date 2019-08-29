@@ -15,7 +15,7 @@ class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->withFactories(__DIR__ . '/database/factories');
+        $this->withFactories(__DIR__.'/database/factories');
     }
 
     protected function getPackageProviders($app)
@@ -23,7 +23,7 @@ class TestCase extends BaseTestCase
         return [
             UserServiceProvider::class,
             MediaServiceProvider::class,
-            OptixMediaServiceProvider::class
+            OptixMediaServiceProvider::class,
         ];
     }
 
@@ -33,7 +33,7 @@ class TestCase extends BaseTestCase
         $app['config']->set('database.connections.sqlite', [
             'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix' => ''
+            'prefix' => '',
         ]);
 
         $app['config']->set('media.disk', 'public');
@@ -46,7 +46,7 @@ class TestCase extends BaseTestCase
             'name' => 'Admin',
             'email' => 'admin@optimus.test',
             'username' => 'admin',
-            'password' => bcrypt('password')
+            'password' => bcrypt('password'),
         ]);
 
         $this->actingAs($user, 'admin');
@@ -64,7 +64,7 @@ class TestCase extends BaseTestCase
             'mime_type',
             'size',
             'created_at',
-            'updated_at'
+            'updated_at',
         ];
     }
 
@@ -75,7 +75,7 @@ class TestCase extends BaseTestCase
             'name',
             'parent_id',
             'created_at',
-            'updated_at'
+            'updated_at',
         ];
     }
 }

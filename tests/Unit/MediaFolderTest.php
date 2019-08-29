@@ -38,7 +38,7 @@ class MediaFolderTest extends TestCase
         $query->shouldReceive('where')->with('parent_id', $requestParams['parent'])
             ->once()
             ->andReturnSelf();
-        
+
         $this->folder->scopeApplyFilters($query, $requestParams);
     }
 }
