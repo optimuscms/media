@@ -30,8 +30,8 @@ class GetMediaTest extends TestCase
             ->assertJsonCount(3, 'data')
             ->assertJsonStructure([
                 'data' => [
-                    '*' => $this->expectedMediaJsonStructure()
-                ]
+                    '*' => $this->expectedMediaJsonStructure(),
+                ],
             ]);
 
         $ids = $response->decodeResponseJson('data.*.id');
@@ -40,7 +40,7 @@ class GetMediaTest extends TestCase
             $this->assertContains($media->id, $ids);
         });
     }
-    
+
     /** @test */
     public function it_can_get_all_the_media_in_a_specific_folder()
     {
@@ -49,19 +49,19 @@ class GetMediaTest extends TestCase
         $rootMedia = factory(Media::class)->create();
 
         $folderMedia = factory(Media::class, 2)->create([
-            'folder_id' => $folder->id
+            'folder_id' => $folder->id,
         ]);
 
         $response = $this->getJson(
-            route('admin.api.media.index') . '?folder=' . $folder->id
+            route('admin.api.media.index').'?folder='.$folder->id
         );
 
         $response
             ->assertJsonCount(2, 'data')
             ->assertJsonStructure([
                 'data' => [
-                    '*' => $this->expectedMediaJsonStructure()
-                ]
+                    '*' => $this->expectedMediaJsonStructure(),
+                ],
             ]);
 
         $ids = $response->decodeResponseJson('data.*.id');
@@ -79,13 +79,13 @@ class GetMediaTest extends TestCase
         $media = factory(Media::class)->create();
 
         $response = $this->getJson(route('admin.api.media.show', [
-            'id' => $media->id
+            'id' => $media->id,
         ]));
 
         $response
             ->assertOk()
             ->assertJsonStructure([
-                'data' => $this->expectedMediaJsonStructure()
+                'data' => $this->expectedMediaJsonStructure(),
             ])
             ->assertJson([
                 'data' => [
@@ -96,8 +96,8 @@ class GetMediaTest extends TestCase
                     'mime_type' => $media->mime_type,
                     'size' => $media->size,
                     'created_at' => (string) $media->created_at,
-                    'updated_at' => (string) $media->updated_at
-                ]
+                    'updated_at' => (string) $media->updated_at,
+                ],
             ]);
     }
 }

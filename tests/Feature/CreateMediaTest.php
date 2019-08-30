@@ -23,7 +23,7 @@ class CreateMediaTest extends TestCase
 
         Storage::fake('public');
     }
-    
+
     /** @test */
     public function it_can_upload_media_to_the_root()
     {
@@ -33,7 +33,7 @@ class CreateMediaTest extends TestCase
 
         $response = $this->postJson(route('admin.api.media.store'), $data = [
             'folder_id' => null,
-            'file' => $image
+            'file' => $image,
         ]);
 
         // Assert media thumbnail conversion ran...
@@ -42,7 +42,7 @@ class CreateMediaTest extends TestCase
         $response
             ->assertStatus(201)
             ->assertJsonStructure([
-                'data' => $this->expectedMediaJsonStructure()
+                'data' => $this->expectedMediaJsonStructure(),
             ])
             ->assertJson([
                 'data' => [
@@ -51,8 +51,8 @@ class CreateMediaTest extends TestCase
                     'file_name' => 'image.png',
                     'extension' => 'png',
                     'mime_type' => 'image/png',
-                    'size' => $image->getSize()
-                ]
+                    'size' => $image->getSize(),
+                ],
             ]);
 
         $this->assertMediaExists(
@@ -69,13 +69,13 @@ class CreateMediaTest extends TestCase
 
         $response = $this->postJson(route('admin.api.media.store'), $data = [
             'folder_id' => $folder->id,
-            'file' => $document
+            'file' => $document,
         ]);
 
         $response
             ->assertStatus(201)
             ->assertJsonStructure([
-                'data' => $this->expectedMediaJsonStructure()
+                'data' => $this->expectedMediaJsonStructure(),
             ])
             ->assertJson([
                 'data' => [
@@ -84,8 +84,8 @@ class CreateMediaTest extends TestCase
                     'file_name' => 'document.doc',
                     'extension' => 'doc',
                     'mime_type' => 'application/msword',
-                    'size' => $document->getSize()
-                ]
+                    'size' => $document->getSize(),
+                ],
             ]);
 
         $this->assertMediaExists(
@@ -99,12 +99,12 @@ class CreateMediaTest extends TestCase
         $audio = UploadedFile::fake()->create('audio.mp3')->size(32);
 
         $response = $this->postJson(route('admin.api.media.store'), [
-            'file' => $audio
+            'file' => $audio,
         ]);
 
         $response
             ->assertJsonStructure([
-                'data' => $this->expectedMediaJsonStructure()
+                'data' => $this->expectedMediaJsonStructure(),
             ])
             ->assertJson([
                 'data' => [
@@ -113,8 +113,8 @@ class CreateMediaTest extends TestCase
                     'file_name' => 'audio.mp3',
                     'extension' => 'mp3',
                     'mime_type' => 'audio/mpeg',
-                    'size' => $audio->getSize()
-                ]
+                    'size' => $audio->getSize(),
+                ],
             ]);
 
         $this->assertMediaExists(
@@ -131,14 +131,14 @@ class CreateMediaTest extends TestCase
         Queue::fake();
 
         $this->postJson(route('admin.api.media.store'), [
-            'file' => $document
+            'file' => $document,
         ]);
 
         // Assert conversion did not run...
         Queue::assertNotPushed(PerformConversions::class);
 
         $this->postJson(route('admin.api.media.store'), [
-            'file' => $image
+            'file' => $image,
         ]);
 
         // Assert conversion ran...
@@ -153,7 +153,7 @@ class CreateMediaTest extends TestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'file'
+                'file',
             ]);
     }
 
@@ -161,13 +161,13 @@ class CreateMediaTest extends TestCase
     public function the_file_field_must_be_a_file_when_present()
     {
         $response = $this->postJson(route('admin.api.media.store'), [
-            'file' => 'not-a-file'
+            'file' => 'not-a-file',
         ]);
 
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'file'
+                'file',
             ]);
     }
 
@@ -178,13 +178,13 @@ class CreateMediaTest extends TestCase
 
         $response = $this->postJson(route('admin.api.media.store'), [
             'file' => $document,
-            'folder_id' => 9999
+            'folder_id' => 9999,
         ]);
 
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'folder_id'
+                'folder_id',
             ]);
     }
 

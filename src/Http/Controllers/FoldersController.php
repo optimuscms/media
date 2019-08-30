@@ -13,7 +13,7 @@ class FoldersController extends Controller
 {
     public function index(Request $request)
     {
-        $folders = MediaFolder::filter($request)->get();
+        $folders = MediaFolder::applyFilters($request->all())->get();
 
         return FolderResource::collection($folders);
     }

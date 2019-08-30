@@ -2,20 +2,19 @@
 
 namespace Optimus\Media\Models;
 
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 class MediaFolder extends Model
 {
     protected $fillable = [
-        'name', 'parent_id'
+        'name', 'parent_id',
     ];
 
-    public function scopeFilter(Builder $query, Request $request)
+    public function scopeApplyFilters(Builder $query, array $filters)
     {
-        if ($request->filled('parent')) {
-            $parent = $request->input('parent');
+        if (! empty($filters['parent'])) {
+            $parent = $filters['parent'];
             $query->where('parent_id', $parent === 'root' ? null : $parent);
         }
     }

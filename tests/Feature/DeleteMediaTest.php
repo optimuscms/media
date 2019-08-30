@@ -17,7 +17,7 @@ class DeleteMediaTest extends TestCase
 
         $media = factory(Media::class)->create([
             'name' => 'Name',
-            'folder_id' => null
+            'folder_id' => null,
         ]);
 
         $response = $this->deleteJson(
@@ -27,7 +27,7 @@ class DeleteMediaTest extends TestCase
         $response->assertStatus(204);
 
         $this->assertDatabaseMissing($media->getTable(), [
-            'id' => $media->id
+            'id' => $media->id,
         ]);
     }
 }

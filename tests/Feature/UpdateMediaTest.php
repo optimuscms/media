@@ -20,12 +20,14 @@ class UpdateMediaTest extends TestCase
         $this->signIn();
 
         $folder = factory(MediaFolder::class)->create([
-            'name' => 'New folder name'
+            'name' => 'New folder name',
         ]);
 
         $this->media = factory(Media::class)->create([
             'name' => 'Old name',
-            'folder_id' => $folder->id
+            'caption' => 'Old caption',
+            'alt_text' => 'Old alt text',
+            'folder_id' => $folder->id,
         ]);
     }
 
@@ -40,13 +42,55 @@ class UpdateMediaTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonStructure([
-                'data' => $this->expectedMediaJsonStructure()
+                'data' => $this->expectedMediaJsonStructure(),
             ])
             ->assertJson([
                 'data' => [
                     'name' => $newData['name'],
-                    'folder_id' => $this->media->folder_id
-                ]
+                    'folder_id' => $this->media->folder_id,
+                ],
+            ]);
+    }
+
+    /** @test */
+    public function it_can_change_the_caption_of_a_media_item()
+    {
+        $response = $this->patchJson(
+            route('admin.api.media.update', ['id' => $this->media->id]),
+            $newData = ['caption' => 'New caption']
+        );
+
+        $response
+            ->assertOk()
+            ->assertJsonStructure([
+                'data' => $this->expectedMediaJsonStructure(),
+            ])
+            ->assertJson([
+                'data' => [
+                    'caption' => $newData['caption'],
+                    'folder_id' => $this->media->folder_id,
+                ],
+            ]);
+    }
+
+    /** @test */
+    public function it_can_change_the_alt_text_of_a_media_item()
+    {
+        $response = $this->patchJson(
+            route('admin.api.media.update', ['id' => $this->media->id]),
+            $newData = ['alt_text' => 'New alt text']
+        );
+
+        $response
+            ->assertOk()
+            ->assertJsonStructure([
+                'data' => $this->expectedMediaJsonStructure(),
+            ])
+            ->assertJson([
+                'data' => [
+                    'alt_text' => $newData['alt_text'],
+                    'folder_id' => $this->media->folder_id,
+                ],
             ]);
     }
 
@@ -54,7 +98,7 @@ class UpdateMediaTest extends TestCase
     public function it_can_move_a_media_item_into_another_folder()
     {
         $newFolder = factory(MediaFolder::class)->create([
-            'name' => 'New folder name'
+            'name' => 'New folder name',
         ]);
 
         $response = $this->patchJson(
@@ -65,13 +109,13 @@ class UpdateMediaTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonStructure([
-                'data' => $this->expectedMediaJsonStructure()
+                'data' => $this->expectedMediaJsonStructure(),
             ])
             ->assertJson([
                 'data' => [
                     'name' => $this->media->name,
-                    'folder_id' => $newData['folder_id']
-                ]
+                    'folder_id' => $newData['folder_id'],
+                ],
             ]);
     }
 
@@ -86,13 +130,13 @@ class UpdateMediaTest extends TestCase
         $response
             ->assertOk()
             ->assertJsonStructure([
-                'data' => $this->expectedMediaJsonStructure()
+                'data' => $this->expectedMediaJsonStructure(),
             ])
             ->assertJson([
                 'data' => [
                     'name' => $this->media->name,
-                    'folder_id' => $newData['folder_id']
-                ]
+                    'folder_id' => $newData['folder_id'],
+                ],
             ]);
     }
 
@@ -107,7 +151,7 @@ class UpdateMediaTest extends TestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'folder_id'
+                'folder_id',
             ]);
     }
 
@@ -122,7 +166,7 @@ class UpdateMediaTest extends TestCase
         $response
             ->assertStatus(422)
             ->assertJsonValidationErrors([
-                'name'
+                'name',
             ]);
     }
 }
